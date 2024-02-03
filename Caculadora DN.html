@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Suma y División con Números Enteros en Rango y Resultado</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        font-size: 20px;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        margin-top: 0;
+      }
+
+      form {
+        max-width: 400px;
+        width: 100%;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 20px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+      }
+
+      button {
+        display: block;
+        width: 100%;
+        padding: 30px;
+        font-size: 24px;
+        border-radius: 4px;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+
+      #output {
+        margin-top: 20px;
+      }
+
+      #demostracion {
+        margin-top: 20px;
+      }
+
+      @media only screen and (max-width: 600px) {
+        form {
+          max-width: 100%;
+          margin-top: 20px;
+        }
+
+        input[type="number"] {
+          width: calc(100% - 20px);
+        }
+        body {
+          display: flex;
+          justify-content: stretch;
+        }
+      }
+    </style>
+    <script>
+      function generarNumeros() {
+        var rangoMin = parseInt(document.getElementById("rangoMin").value);
+        var rangoMax = parseInt(document.getElementById("rangoMax").value);
+        var cantidad = parseInt(document.getElementById("cantidad").value);
+        var resultado = parseInt(document.getElementById("resultado").value);
+
+        var numeros = [];
+        var suma = 0;
+        var resultadoFinal = 0;
+        var intentos = 0;
+
+        while (Math.abs(resultadoFinal - resultado) > 0.01) {
+          intentos++;
+          numeros = [];
+          suma = 0;
+
+          for (var i = 0; i < cantidad - 1; i++) {
+            var numero = Math.floor(
+              Math.random() * (rangoMax - rangoMin + 1) + rangoMin
+            );
+            numeros.push(numero);
+            suma += numero;
+          }
+
+          var ultimoNumero = resultado * cantidad - suma;
+
+          // Ajustar el último número para que la suma y división cumpla con el resultado deseado y esté dentro del rango
+          if (ultimoNumero < rangoMin) {
+            ultimoNumero = rangoMin;
+          } else if (ultimoNumero > rangoMax) {
+            ultimoNumero = rangoMax;
+          }
+          numeros.push(ultimoNumero);
+
+          var sumaTotal = suma + ultimoNumero;
+          resultadoFinal = sumaTotal / cantidad;
+
+          // Limitar la cantidad máxima de intentos para evitar bucles infinitos
+          if (intentos >= 1000) {
+            document.getElementById("output").innerHTML =
+              "No se pudo encontrar una combinación adecuada. Intente con diferentes valores.";
+            document.getElementById("demostracion").innerHTML = "";
+            return;
+          }
+        }
+
+        document.getElementById("output").innerHTML =
+          "Números generados: " + numeros.join(", ");
+
+        // Demostración de que el resultado es correcto
+        var sumaTotal = suma + ultimoNumero;
+        resultadoFinal = sumaTotal / cantidad;
+        document.getElementById("demostracion").innerHTML =
+          "Suma total: " + sumaTotal + "<br>Resultado final: " + resultadoFinal;
+      }
+
+      function handleKeyPress(e) {
+        if (e.key === "Enter") {
+          if (e.target.id === "resultado") {
+            generarNumeros();
+          } else {
+            var currentElement = e.target;
+            var form = currentElement.form;
+            var index = Array.prototype.indexOf.call(form, currentElement);
+
+            // Navegar al siguiente campo si no es el último
+            if (index < form.elements.length - 1) {
+              form.elements[index + 1].focus();
+            }
+
+            e.preventDefault();
+          }
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", function (event) {
+        var inputs = document.getElementsByTagName("input");
+        for (var i = 0; i < inputs.length; i++) {
+          inputs[i].addEventListener("keypress", handleKeyPress);
+        }
+      });
+    </script>
+  </head>
+  <body style="display: flex; flex-direction: column">
+    <h1>Calculadora DN</h1>
+    <form>
+      <label for="rangoMin">Numero mínimo:</label>
+      <input type="number" id="rangoMin" value="70" />
+
+      <label for="rangoMax">Numero máximo:</label>
+      <input type="number" id="rangoMax" value="100" />
+
+      <label for="cantidad">Cantidad de números:</label>
+      <input type="number" id="cantidad" value="3" />
+
+      <label for="resultado">Resultado deseado:</label>
+      <input type="number" id="resultado" />
+
+      <button type="button" onclick="generarNumeros()">Generar</button>
+
+      <p id="output"></p>
+      <h2>Resultado</h2>
+      <div id="demostracion"></div>
+    </form>
+  </body>
+</html>
