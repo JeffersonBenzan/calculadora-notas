@@ -182,6 +182,44 @@
         }
       });
     </script>
+    <script>
+      let deferredPrompt;
+    
+      window.addEventListener("beforeinstallprompt", (event) => {
+        event.preventDefault();
+        deferredPrompt = event;
+        
+    
+        const installButton = document.createElement("button");
+        installButton.innerText = "Instalar App";
+        installButton.style.position = "fixed";
+        installButton.style.bottom = "20px";
+        installButton.style.left = "50%";
+        installButton.style.transform = "translateX(-50%)";
+        installButton.style.padding = "10px 20px";
+        installButton.style.fontSize = "18px";
+        installButton.style.backgroundColor = "#4caf50";
+        installButton.style.color = "#fff";
+        installButton.style.border = "none";
+        installButton.style.borderRadius = "5px";
+        installButton.style.cursor = "pointer";
+        document.body.appendChild(installButton);
+    
+        installButton.addEventListener("click", () => {
+          installButton.style.display = "none";
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === "accepted") {
+              console.log("El usuario aceptó la instalación");
+            } else {
+              console.log("El usuario canceló la instalación");
+            }
+            deferredPrompt = null;
+          });
+        });
+      });
+    </script>
+    
   </head>
   <body style="display: flex; flex-direction: column">
     <h1>Calculadora</h1>
