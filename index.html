@@ -182,44 +182,53 @@
         }
       });
     </script>
-    <script>
-      let deferredPrompt;
-    
-      window.addEventListener("beforeinstallprompt", (event) => {
-        event.preventDefault();
-        deferredPrompt = event;
-        
-    
-        const installButton = document.createElement("button");
-        installButton.innerText = "Instalar App";
-        installButton.style.position = "fixed";
-        installButton.style.bottom = "20px";
-        installButton.style.left = "50%";
-        installButton.style.transform = "translateX(-50%)";
-        installButton.style.padding = "10px 20px";
-        installButton.style.fontSize = "18px";
-        installButton.style.backgroundColor = "#4caf50";
-        installButton.style.color = "#fff";
-        installButton.style.border = "none";
-        installButton.style.borderRadius = "5px";
-        installButton.style.cursor = "pointer";
-        document.body.appendChild(installButton);
-    
-        installButton.addEventListener("click", () => {
-          installButton.style.display = "none";
-          deferredPrompt.prompt();
-          deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === "accepted") {
-              console.log("El usuario aceptó la instalación");
-            } else {
-              console.log("El usuario canceló la instalación");
-            }
-            deferredPrompt = null;
-          });
+  
+  <script>
+    let deferredPrompt;
+  
+    function isMobile() {
+      return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    }
+  
+    window.addEventListener("beforeinstallprompt", (event) => {
+      if (!isMobile()) return; 
+  
+      event.preventDefault();
+      deferredPrompt = event;
+  
+      const installButton = document.createElement("button");
+      installButton.innerText = "Instalar App";
+      installButton.style.position = "fixed";
+      installButton.style.bottom = "20px";
+      installButton.style.left = "50%";
+      installButton.style.transform = "translateX(-50%)";
+      installButton.style.padding = "15px 25px";
+      installButton.style.fontSize = "18px";
+      installButton.style.backgroundColor = "#4caf50";
+      installButton.style.color = "#fff";
+      installButton.style.border = "none";
+      installButton.style.borderRadius = "8px";
+      installButton.style.cursor = "pointer";
+      installButton.style.boxShadow = "0px 4px 6px rgba(0, 0, 0, 0.1)";
+      installButton.style.zIndex = "1000";
+  
+      document.body.appendChild(installButton);
+  
+      installButton.addEventListener("click", () => {
+        installButton.style.display = "none";
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === "accepted") {
+            console.log("El usuario aceptó la instalación");
+          } else {
+            console.log("El usuario canceló la instalación");
+          }
+          deferredPrompt = null;
         });
       });
-    </script>
-    
+    });
+  </script>
+  
   </head>
   <body style="display: flex; flex-direction: column">
     <h1>Calculadora</h1>
