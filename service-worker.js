@@ -1,11 +1,11 @@
 const CACHE_NAME = "calculadora-cache-v1";
 const urlsToCache = [
-  "/",
-  "/index.html",
-  "/manifest.json",
-  "/icon-192.png",
-  "/icon-512.png",
-  "/favicon.png"
+  "/calculadora-notas/",
+  "/calculadora-notas/index.html",
+  "/calculadora-notas/manifest.json",
+  "/calculadora-notas/icon-192.png",
+  "/calculadora-notas/icon-512.png",
+  "/calculadora-notas/favicon.ico"
 ];
 
 self.addEventListener("install", event => {
