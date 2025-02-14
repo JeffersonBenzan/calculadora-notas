@@ -3,6 +3,7 @@
   <head>
     <title>Suma y División con Números Enteros en Rango y Resultado</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <style>
       body {
         display: flex;
@@ -169,6 +170,11 @@
         var inputs = document.getElementsByTagName("input");
         for (var i = 0; i < inputs.length; i++) {
           inputs[i].addEventListener("keypress", handleKeyPress);
+        }
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker.register("/service-worker.js")
+            .then(() => console.log("Service Worker registrado"))
+            .catch(error => console.log("Error en registro del Service Worker:", error));
         }
       });
     </script>
